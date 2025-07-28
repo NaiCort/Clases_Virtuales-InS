@@ -1,3 +1,4 @@
 .venvY
 __pycache__/
 *.log
+.env
