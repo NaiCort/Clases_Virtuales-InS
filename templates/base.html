@@ -9,11 +9,52 @@
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="#">Clases Virtuales</a>
+            <a class="navbar-brand" href="{% url 'courses:course_list' %}">Clases Virtuales</a>
+
+            {# --- NUEVO: enlaces a la derecha --- #}
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        {% if user.is_teacher %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'courses:teacher_course_list' %}">
+                                    Mis cursos (docente)
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'courses:my_courses' %}">Mis cursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button class="btn btn-link nav-link" type="submit">Salir</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">
+                                Ingresar
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </nav>
 
     <div class="container">
+
+        {# --- NUEVO: mensajes flash --- #}
+        {% if messages %}
+          {% for msg in messages %}
+            <div class="alert alert-{{ msg.tags }} alert-dismissible fade show" role="alert">
+              {{ msg }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </div>

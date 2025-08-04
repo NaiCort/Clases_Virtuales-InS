@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <h1>{{ object.title }}</h1>
+    <p class="text-muted">Creado por {{ object.teacher.username }} · {{ object.created_at|date:"d M Y" }}</p>
+    <p>{{ object.description }}</p>
+
+    <h4 class="mt-4">Contenido</h4>
+    <ol class="list-group list-group-numbered">
+      {% for lesson in object.lessons.all %}
+        <li class="list-group-item">{{ lesson.title }}</li>
+      {% empty %}
+        <li class="list-group-item">Aún no hay lecciones.</li>
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div class="col-lg-4">
+    {% if user.is_authenticated %}
+      {# Botón de inscripción vendrá más adelante #}
+      <button class="btn btn-success w-100 mb-3" disabled>Inscribirme (próximamente)</button>
+    {% else %}
+      <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary w-100 mb-3">
+        Inicia sesión para inscribirte
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
