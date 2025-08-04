@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from django.urls import reverse_lazy
+
+LOGIN_URL = "login"                       # ya tienes la ruta /login/
+LOGIN_REDIRECT_URL = reverse_lazy("courses:course_list")  # o "courses:my_courses"
+LOGOUT_REDIRECT_URL = "home"              # tu vista raíz que redirige a courses
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'courses',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
